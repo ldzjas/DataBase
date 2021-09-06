@@ -1,2 +1,1 @@
-# DataBase
-In this repository, I will submit my datebase homework.
+马仲毅的数据库作业
