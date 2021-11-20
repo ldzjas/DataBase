@@ -26,6 +26,7 @@ class ExtendibleHash : public HashTable<K, V> {
 		int localDepth;
 		std::map<K, V> items;
 		explicit Bucket(int depth) :localDepth(depth) {};
+		size_t id = 0;
   };
 public:
   // constructor
@@ -47,7 +48,9 @@ private:
 	size_t bucketMaxSize;
 	int numBuckets;
 	std::vector<std::shared_ptr<Bucket>> bucketTable;
+	std::shared_ptr<Bucket> split(std::shared_ptr<Bucket>&);
 	std::mutex mutex;
 	int getBucketIndex(const K& key) const;
+	int bucket_count;
 };
 } // namespace scudb

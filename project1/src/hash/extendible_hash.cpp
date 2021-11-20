@@ -141,6 +141,38 @@ void ExtendibleHash<K, V>::Insert(const K &key, const V &value) {
     targetBucket->items[key] = value;
 }
 
+template <typename K, typename V>
+std::shared_ptr<typename ExtendibleHash<K, V>::Bucket>
+ExtendibleHash<K, V>::split(std::shared_ptr<Bucket>& b) {
+    // 先创建一个新桶
+    auto res = std::make_shared<Bucket>(b->localDepth);
+    while (res->items.empty()) {
+        // 先将深度加一
+        b->localDepth++;
+        res->localDepth++;
+        // for循环实现两个桶的重新分配
+        for (auto it = b->items.begin(); it != b->items.end();) {
+            if (HashKey(it->first) & (1 << (b->localDepth - 1))) {
+                res->items.insert(*it);
+                res->id = HashKey(it->first) & ((1 << b->localDepth) - 1);
+                it = b->items.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+
+        // 如果b桶的map为空，则清空当前桶继续遍历
+        if (b->items.empty()) {
+            b->items.swap(res->items);
+            b->id = res->id;
+        }
+    }
+
+    ++bucket_count;
+    return res;
+}
+
 template class ExtendibleHash<page_id_t, Page *>;
 template class ExtendibleHash<Page *, std::list<Page *>::iterator>;
 // test purpose
