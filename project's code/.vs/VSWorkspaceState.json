@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\include",
+    "\\src\\include\\hash",
+    "\\test",
+    "\\test\\hash",
+    "\\test\\include"
+  ],
+  "SelectedNode": "\\src\\include\\hash\\extendible_hash.h",
+  "PreviewInSolutionExplorer": false
+}
